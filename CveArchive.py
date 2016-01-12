@@ -42,7 +42,7 @@ def main(argv):
 if __name__ == "__main__":
     if len(sys.argv)!=1:
         print "\nThis script updates a local instance of the National Vulnerability Database (NVD) and queries it for CVEs released in the last %s days." %(cfg.ReportPeriod)
-        print "Then, the results are saved to an Excel file and sent via email to CISO recipients (for review prior to distribution)."
+        print "Then, the results are saved to an Excel file and sent via email to previewers (for review prior to distribution)."
         print "\nUsage: This script takes no input variable."
 
     else:
