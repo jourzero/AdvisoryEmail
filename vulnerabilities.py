@@ -9,8 +9,8 @@ from openpyxl import load_workbook
 from openpyxl.workbook import Workbook
 from openpyxl.styles import Font, Color
 from openpyxl.comments import Comment
-from openpyxl.charts import BarChart, Reference, Series
-from openpyxl.drawing import Drawing, Image
+#from openpyxl.charts import BarChart, Reference, Series
+#from openpyxl.drawing import Drawing, Image
 import calendar
 import re
 import urllib
@@ -75,6 +75,7 @@ def processNvdXML(xmlfile):
 	    summary = summary[:251] + "..."
 	if summary[:12] == "** REJECT **":
 	    continue
+	print cveId;
 	pubDate	= cve.find('{0}published-datetime'.format(nsVuln)).text[:10]
 	pubYear	= pubDate[:4]
 	pubMonth= pubDate[5:7]
@@ -159,7 +160,7 @@ def updateLocalCveDB(vulns, tblName):
     print "-- Truncating the CVE table, prior to (re)inserting data"
     cur.execute("TRUNCATE TABLE " + tblName)
 
-    print "-- Inserting CVE records"
+    print "-- Inserting " , len(vulns) , " CVE records"
     for vuln in vulns:
 	cols=""
 	for col in cfg.nvdFields:
@@ -169,11 +170,13 @@ def updateLocalCveDB(vulns, tblName):
 	sql = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s)" %(tblName, cols)
 	#print "--- Inserting " + vuln[0]
 	try:
-	    cur.execute(sql, vuln)
+		cur.execute(sql, vuln)
+		db.commit()
+		#print "Last Executed: ", cur._last_executed 
 	except Exception as ex:
-	    template = "Exception of type {0} occured. Arguments:\n{1!r}"
-	    message = template.format(type(ex).__name__, ex.args)
-	    print message	    
+		template = "Exception of type {0} occured. Arguments:\n{1!r}"
+		message = template.format(type(ex).__name__, ex.args)
+		print message	    
     print "-- Done."
 
     # Disconnect from DB server
@@ -251,7 +254,7 @@ def getCVEsByAsset(assetList, startDate, endDate):
             #result = (asset,year,month,publishDate,cveId,title,modDate,cveURI,severity,affectedSW,refs,authReq,aComplexity,cImpact,iImpact,aImpact,aVector,cvssScore,cweURI)
             result = (year,month,publishDate,cveId,asset,title,modDate,cveURI,severity,affectedSW,refs,authReq,aComplexity,cImpact,iImpact,aImpact,aVector,cvssScore,cweURI)
             vulList.append(result)
-    print "-- Done."
+    print "-- Done. Total records: ", len(vulList)
     return vulList
 
 
@@ -281,16 +284,16 @@ def createCVEsByAssetReport(domain, vulnList, year, month, filename):
     ws2["B5"].value = int(month)-1 
 
     # Add header images 
-    img1 = Image('logo1-small.gif')
-    img2 = Image('logo2-small.png')
-    img1.drawing.top = 2
-    img1.drawing.left = 0
-    img2.drawing.top = 2
-    img2.drawing.left = 600
-    ws1.add_image(img1)
-    ws1.add_image(img2)    
-    ws2.add_image(img1)
-    ws2.add_image(img2)
+    #img1 = Image('logo1-small.gif')
+    #img2 = Image('logo2-small.png')
+    #img1.drawing.top = 2
+    #img1.drawing.left = 0
+    #img2.drawing.top = 2
+    #img2.drawing.left = 600
+    #ws1.add_image(img1)
+    #ws1.add_image(img2)    
+    #ws2.add_image(img1)
+    #ws2.add_image(img2)
     
     # Save the Excel workbook
     wb.save(filename = destFilename)
@@ -382,7 +385,8 @@ def createSimpleCVEReport(rptYear, filename, dbTable):
     for vuln in vulnList:
         cCounter = 1        
         for item in vuln:
-	    ws.cell(row = rCounter, column = cCounter).value = item
+	    ws.cell(row = rCounter, column = cCounter).value = unicode(str(item),errors='ignore')
+
 	    if "URL" in cfg.rptFields[cCounter] and item[:4] == "http":
 		ws.cell(row = rCounter, column = cCounter).value = '=hyperlink("' + item + '","' + item + '")'
             cCounter += 1

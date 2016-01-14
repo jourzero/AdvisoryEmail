@@ -1,7 +1,7 @@
 # Email parameters
 orig		= "noreply@yourdomain.com"
 dest		= "email1@yourdomain.com,email2@yourdomain.com"
-mx		    = "mx.yourdomain.com"
+mx		= "mx.yourdomain.com"
 
 # Reporting parameters
 ReportPeriod 	= 60 #days
@@ -19,8 +19,9 @@ tmpDir		= "tmp/"
 excelTemplate    = "YYYY-MM Vulnerability Alerts version 1.xlsx"
 
 # Resource names
-nvdCveXmlBase   = "http://static.nvd.nist.gov/feeds/xml/cve/"
-nvdCveXmlFile 	= "nvdcve-2.0-2014.xml"
+#nvdCveXmlBase   = "http://static.nvd.nist.gov/feeds/xml/cve/"
+nvdCveXmlBase   = "https://nvd.nist.gov/feeds/xml/cve/" 
+nvdCveXmlFile 	= "nvdcve-2.0-2016.xml.zip"
 nvdCveXmlFileBase = "nvdcve-2.0-"
 
 # URL Bases for Mitre resources

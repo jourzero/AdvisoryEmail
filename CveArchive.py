@@ -17,7 +17,8 @@ def main(argv):
     allVulns = []
 
     # Get CVE data from the previous 3 years
-    for year in range(thisYear-4, thisYear):
+    #for year in range(thisYear-4, thisYear):
+    for year in range(thisYear-1, thisYear):
         print "*** Processing CVE data for " + str(year)
 
         # Get NVD data

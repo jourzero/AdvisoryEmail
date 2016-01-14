@@ -1,0 +1,22 @@
+* Installed required software. On Debian:
+    apt-get install mysql-server mysql-client
+    apt-get install python-pip
+    apt-get install python-dev libmysqlclient-dev
+* Install required Python modules:
+    pip install MySQL-python
+    pip install openpyxl
+    pip install charts
+    pip install BeautifulSoup
+* Create the MySQL DB:
+./CreateDB.py 
+
+* Run the CVE archiver (4 previous years)
+    ./CveArchive.py
+
+* View the data
+    cat AdvisoryConfig.py # to get the DB password
+    mysql -u cveadm -p
+    > use cvedb;
+    > select count(*) from cve_archive;
+
+
