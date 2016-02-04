@@ -1,4 +1,4 @@
-#! /usr/bin/python2.6
+#! /usr/bin/python
 #==================================================================
 # CveAdvisory.py: This script updates a local copy of the NVD,
 #                 queries it to get latest CVEs and then emails

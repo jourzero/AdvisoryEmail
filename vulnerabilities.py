@@ -61,6 +61,7 @@ def getCveDataFromNVD(xmlfile):
 #--------------------------------------------------------------------------------------------------
 def processNvdXML(xmlfile):
 
+    print "-- Processing " + cfg.repDir + xmlfile
     tree = ET.parse(cfg.repDir + xmlfile)
     nsVuln='{http://scap.nist.gov/schema/vulnerability/0.4}'
     nsCvss='{http://scap.nist.gov/schema/cvss-v2/0.2}'

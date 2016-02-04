@@ -18,7 +18,8 @@ def main(argv):
 
     # Get CVE data from the previous 3 years
     #for year in range(thisYear-4, thisYear):
-    for year in range(thisYear-1, thisYear):
+    #for year in range(thisYear-2, thisYear):
+    for year in range(2014, 2017):
         print "*** Processing CVE data for " + str(year)
 
         # Get NVD data
@@ -36,9 +37,9 @@ def main(argv):
     vul.updateLocalCveDB(allVulns, cfg.dbArchiveTable)
     
     # Create cumulative CVE report in Excel (all CVEs created this year)
-    reportFile="%s-%s CVE Archive.xlsx" %(str(thisYear-4), str(thisYear-1))
+    reportFile="%s-%s CVE Archive.xlsx" %(str(thisYear-1), str(thisYear))
     print "- Saving the cumulative CVE list to Excel as %s" % (reportFile)
-    vul.createSimpleCVEReport(str(thisYear-4) + " to " + str(thisYear-1), reportFile, cfg.dbArchiveTable)
+    vul.createSimpleCVEReport(str(thisYear-1) + " to " + str(thisYear), reportFile, cfg.dbArchiveTable)
 
 if __name__ == "__main__":
     if len(sys.argv)!=1:
